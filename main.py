@@ -71,7 +71,7 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == MOUSEBUTTONUP and (not x_win or o_win):
+        if event.type == MOUSEBUTTONUP and not (x_win or o_win or cat_win):
             pos = get_xy(pygame.mouse.get_pos())
             if x_turn and game.setX(*pos):
                 draw_pos = ((pos[0] * 100) + (pos[0] * 3), (pos[1] * 100) + (pos[1] * 3))
@@ -82,15 +82,6 @@ while True:
                     x_win = True
                 elif game.checkDraw():
                     cat_win = True
-
-                elif AI_GAME:
-                    pos = next_turn(game,'O')
-                    game.setO(*pos)
-                    draw_pos = ((pos[0] * 100) + (pos[0] * 3), (pos[1] * 100) + (pos[1] * 3))
-                    o = pygame.image.load("imgs/O.png").convert_alpha()
-                    plays.append((o,draw_pos))
-                    if game.checkWin('O'):
-                        o_win = True
                 else:
                     x_turn = False
 
@@ -120,3 +111,13 @@ while True:
         draw_text("Draw!", font, screen, 120, 140)
 
     pygame.display.update()
+
+    if AI_GAME and not x_turn:
+        pos = next_turn(game,'O')
+        game.setO(*pos)
+        draw_pos = ((pos[0] * 100) + (pos[0] * 3), (pos[1] * 100) + (pos[1] * 3))
+        o = pygame.image.load("imgs/O.png").convert_alpha()
+        plays.append((o,draw_pos))
+        if game.checkWin('O'):
+            o_win = True
+        x_turn = True
