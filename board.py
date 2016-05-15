@@ -49,3 +49,25 @@ class Board:
                 return True
         #no win
         return False;
+
+    def checkDraw(self):
+        if not self.checkWin('X') and not self.checkWin('O'):
+            for i in range(0,9):
+                if self.board[i] == '.':
+                    return False
+            return True
+        else:
+            return False
+
+    def copy(self):
+        cpy = Board()
+
+        for y in range(0,3):
+            for x in range(0,3):
+                space = self.get(x,y)
+                if space == 'X':
+                    cpy.setX(x,y)
+                elif space == 'O':
+                    cpy.setO(x,y)
+
+        return cpy
